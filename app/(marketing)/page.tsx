@@ -1,5 +1,6 @@
 import { Heading } from "./_components/heading";
 import { Heros } from "./_components/heros";
+import { Footer } from "./_components/footer";
 const MarketingPage = () => {
   return (
     <div className="min-h-full flex flex-col">
@@ -7,6 +8,7 @@ const MarketingPage = () => {
         <Heading />
         <Heros />
       </div>
+      <Footer />
     </div>
   );
 };
