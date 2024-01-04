@@ -24,6 +24,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import { useSettings } from "@/hooks/use-settings";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -35,6 +36,8 @@ const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  const settings = useSettings();
 
   useEffect(() => {
     if (isMobile) {
@@ -150,7 +153,7 @@ const Navigation = () => {
         <div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={() => {}} />
-          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New note" icon={PlusCircle} />
         </div>
         <div className="mt-4">
