@@ -4,17 +4,21 @@ import { useMutation, useQuery } from "convex/react";
 import { useRouter, useParams } from "next/navigation";
 import { api } from "@/convex/_generated/api";
 import React, { useState } from "react";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
 import { Spinner } from "../../../components/spinner";
 import { Search, Undo, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ConfirmModal } from "../../../components/modals/confirm-modal";
 
-const TrashBox = () => {
+interface TrashBoxProps {
+  setPopoverOpen: (isOpen: boolean) => void;
+}
+
+const TrashBox = ({ setPopoverOpen }: TrashBoxProps) => {
   const router = useRouter();
   const params = useParams();
-  const documents = useQuery(api.documents.getTrash);
+  const documents = useQuery(api.documents.getTrash) as Doc<"documents">[];
   const restore = useMutation(api.documents.restore);
   const remove = useMutation(api.documents.remove);
 
@@ -25,7 +29,8 @@ const TrashBox = () => {
   );
 
   const onClick = (documentId: string) => {
-    router.push(`/trash/${documentId}`);
+    router.push(`/documents/${documentId}`);
+    setPopoverOpen(false);
   };
 
   const onRestore = (
@@ -41,6 +46,8 @@ const TrashBox = () => {
       success: "Note restored!",
       error: "Failed to restore note.",
     });
+
+    setPopoverOpen(false);
   };
 
   const onRemove = (documentId: Id<"documents">) => {
@@ -55,6 +62,8 @@ const TrashBox = () => {
     if (params.documentId === documentId) {
       router.push("/documents");
     }
+
+    setPopoverOpen(false);
   };
 
   if (documents === undefined)

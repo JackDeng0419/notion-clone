@@ -38,6 +38,7 @@ const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+  const [isTrashBoxOpen, setIsTrashBoxOpen] = useState(false);
 
   const settings = useSettings();
 
@@ -162,7 +163,7 @@ const Navigation = () => {
           <DocumentList />
           <Item onClick={handleCreate} label="Add a page" icon={Plus} />
 
-          <Popover>
+          <Popover open={isTrashBoxOpen} onOpenChange={setIsTrashBoxOpen}>
             <PopoverTrigger className="w-full mt-4">
               <Item label="Trash" icon={Trash} />
             </PopoverTrigger>
@@ -170,7 +171,7 @@ const Navigation = () => {
               className="p-0 w-72"
               side={isMobile ? "bottom" : "right"}
             >
-              <TrashBox />
+              <TrashBox setPopoverOpen={setIsTrashBoxOpen}/>
             </PopoverContent>
           </Popover>
         </div>
