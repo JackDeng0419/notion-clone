@@ -6,10 +6,7 @@ import React from "react";
 
 export const useOrigin = () => {
   const [mounted, setMounted] = useState(false);
-  const origin =
-    typeof window !== "underfined" && window.location.origin
-      ? window.location.origin
-      : "";
+  const origin = typeof window.location.origin ? window.location.origin : "";
 
   useEffect(() => {
     setMounted(true);
