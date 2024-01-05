@@ -13,7 +13,7 @@ import {
   Plus,
   Trash,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import {
@@ -54,6 +54,7 @@ const Item = ({
 }: ItemProps) => {
   const { user } = useUser();
   const create = useMutation(api.documents.create);
+  const params = useParams();
   const archieve = useMutation(api.documents.archieve);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
   const router = useRouter();
@@ -64,7 +65,11 @@ const Item = ({
     event.stopPropagation();
     event.preventDefault();
 
-    const promise = archieve({ id: id });
+    const promise = archieve({ id: id }).then(() => {
+      if (id === params.documentId) {
+        router.push("/documents/");
+      }
+    });
 
     toast.promise(promise, {
       loading: "Moving to trash...",
@@ -92,7 +97,7 @@ const Item = ({
         if (!expanded) {
           onExpand?.();
         }
-        // router.push(`/documents/${documentId}`);
+        router.push(`/documents/${documentId}`);
       },
     );
 
@@ -125,7 +130,7 @@ const Item = ({
       {documentIcon ? (
         <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
       ) : (
-        <Icon className="shrink-0 h-[18px] mr-2 text-muted-foreground" />
+        <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
       )}
       <span className="truncate">{label}</span>
 
