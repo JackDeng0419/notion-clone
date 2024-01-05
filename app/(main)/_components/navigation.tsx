@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/popover";
 import { useSettings } from "@/hooks/use-settings";
 import Navbar from "./navbar";
+import { useSearch } from "@/hooks/use-search";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -33,6 +34,7 @@ const Navigation = () => {
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const create = useMutation(api.documents.create);
+  const search = useSearch();
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -158,7 +160,14 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item label="Search" icon={Search} isSearch onClick={() => {}} />
+          <Item
+            label="Search"
+            icon={Search}
+            isSearch
+            onClick={() => {
+              search.onOpen();
+            }}
+          />
           <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New note" icon={PlusCircle} />
         </div>
